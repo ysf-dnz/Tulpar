@@ -5,10 +5,11 @@ export function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
   const [val, setVal] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setVal(to); return; }
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return;
       io.disconnect();
+      if (reducedMotion) { setVal(to); return; }
       const start = performance.now();
       const tick = (now: number) => {
         const p = Math.min((now - start) / 1200, 1);

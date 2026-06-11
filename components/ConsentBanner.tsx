@@ -5,8 +5,12 @@ export function ConsentBanner({ onConsent }: { onConsent: (granted: boolean) => 
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const saved = localStorage.getItem("consent");
-    if (saved === null) { setVisible(true); document.documentElement.style.setProperty("--consent-offset", "88px"); }
-    else onConsent(saved === "granted");
+    if (saved === null) {
+      document.documentElement.style.setProperty("--consent-offset", "88px");
+      const raf = requestAnimationFrame(() => setVisible(true));
+      return () => cancelAnimationFrame(raf);
+    }
+    onConsent(saved === "granted");
   }, [onConsent]);
   const decide = (granted: boolean) => {
     localStorage.setItem("consent", granted ? "granted" : "denied");
