@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tulpar Carpet
 
-## Getting Started
+Tulpar Carpet'in güven platformu sitesi: dürüst etiketli halı koleksiyonu, açık şikayet panosu, 5 yıllık gerçek maliyet hesaplayıcısı ve WhatsApp odaklı dönüşüm sistemi.
 
-First, run the development server:
+**Stack:** Next.js 15 (App Router, TS), Tailwind CSS v4, Sanity v3 (`/studio`'da embed Studio), `next-view-transitions`, Vitest. Tüm sayfalar SSG/ISR + webhook revalidate.
+
+## Kurulum
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
+# .env.local oluşturup aşağıdaki tabloya göre doldurun
+npm run dev                  # http://localhost:3000 — Studio: /studio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Ortam değişkenleri
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Değişken | Zorunlu | Açıklama |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Evet | Sanity proje ID'si |
+| `NEXT_PUBLIC_SANITY_DATASET` | Hayır | Varsayılan `production` |
+| `SANITY_API_READ_TOKEN` | Evet (draft mode) | Viewer token — taslak önizleme için |
+| `SANITY_API_WRITE_TOKEN` | Seed için | Editor token — yalnızca `scripts/seed.ts` çalıştırırken |
+| `SANITY_REVALIDATE_SECRET` | Evet (prod) | Webhook imza doğrulama sırrı (`/api/revalidate`) |
+| `NEXT_PUBLIC_GA_ID` | Hayır | GA4 ölçüm ID'si (`G-…`) — consent sonrası yüklenir |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Hayır | Meta Pixel ID — consent sonrası yüklenir |
+| `NEXT_PUBLIC_SITE_URL` | Evet (prod) | Kanonik origin, ör. `https://tulparcarpet.com` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Not: WhatsApp numarası env değil, CMS'te tutulur (`Site Ayarları → whatsappNumber`, `90…` formatında 12 hane).
 
-## Learn More
+## Sanity projesi kurulumu
 
-To learn more about Next.js, take a look at the following resources:
+1. [sanity.io/manage](https://www.sanity.io/manage) → yeni proje oluşturun, `production` dataset'i ekleyin.
+2. Proje ID'sini `NEXT_PUBLIC_SANITY_PROJECT_ID` olarak girin.
+3. **API → Tokens:** bir *Viewer* token (`SANITY_API_READ_TOKEN`) ve seed için bir *Editor* token (`SANITY_API_WRITE_TOKEN`) üretin.
+4. **API → CORS origins:** `http://localhost:3000` ve prod domain'i (credentials açık) ekleyin.
+5. **Webhook (revalidate):** API → Webhooks → Create:
+   - URL: `https://<site>/api/revalidate`
+   - Dataset: `production`, Trigger: create/update/delete
+   - Projection: `{_type}`
+   - Secret: `SANITY_REVALIDATE_SECRET` ile aynı değer
+6. **Roller (AP-03 ikinci katman):** Editör ve Pano Yöneticisi rollerine `complaint` dokümanı için **delete izni VERMEYİN** (Growth plan custom roles veya dataset ACL). Pano kayıtları silinemez — bu kuralın teknik güvencesi budur.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tohum içerik (seed)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed.ts
+```
 
-## Deploy on Vercel
+`createIfNotExists` kullanır, mevcut içeriğe dokunmaz. Yüklenenler: site ayarları (placeholder WA numarası — **değiştirin**), 2 örnek ürün (Bozkır, Kervan), 6 pano kaydı, `ana-sayfa` / `sss` (15 soru) / `maliyet-hesaplayici` sayfaları. **Ürün görselleri seed'e dahil değildir** — heroImage ve ≥5 galeri görselini Studio'dan ekleyin; eklenene kadar ürünler Studio doğrulamasında uyarı verir.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## İçerik girişi el kitabı (özet)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Ürün ekleme (Studio → Ürün → New)
+
+1. Ürün adı + URL (slug) girin; slug yayın sonrası değiştirilmez.
+2. Açıklama **en az 250 kelime** olmalı (SEO-12) — Studio kısa metni kabul etmez.
+3. Ölçü seçenekleri: her ölçü için fiyat (₺) zorunlu.
+4. Ana görsel + **en az 5 galeri görseli** (UD-06); her görsele alt metin yazın.
+5. Dürüst Etiket: hav yüksekliğini **kendi ölçümünüzle** girin, parti numarasını yazın, 4 leke testinin (çay, kahve, vişne, mürekkep) sonucunu yöntem notuyla doldurun. ÇIKMAZ sonuçları da olduğu gibi yazılır.
+6. **UD-03 kuralı:** "Bu halı kimler için değil" alanı zorunludur (≥40 karakter) ve gerçek bir sınırlama anlatmalıdır — pazarlama cümlesi değil.
+7. SEO: meta başlık ≤60, meta açıklama ≤155 karakter.
+
+### Pano kaydı girme (Studio → Şikayet Kaydı → New)
+
+1. Ticket no ve tarih otomatik gelir; **elle değiştirmeyin**.
+2. Müşteri metnini kişisel veri içermeyecek şekilde (anonim) girin.
+3. Durum: AÇIK ile başlar; cevap verince Tulpar Cevabı + Yanıt Tarihi doldurup ÇÖZÜLDÜ veya İADE yapın.
+4. **AP-03 kuralı: pano kaydı asla silinmez.** Çözülen kayıt cevabıyla yayında kalır. (Editör rollerinde silme yetkisi zaten kapalıdır.)
+
+### Blok düzenleme / gizleme (Studio → Sayfa)
+
+- Sayfa içeriği bloklardan oluşur (Hero, Taahhüt Izgarası, Ürün Vitrini, SSS Akordeonu, CTA Bandı…). Sürükle-bırak ile sıralanır (ADM-02).
+- Bir bloğu yayından kaldırmadan saklamak için bloktaki **"Gizle"** anahtarını açın — içerik kaybolmaz, sadece sitede görünmez.
+- Ana sayfanın slug'ı `ana-sayfa`'dır; değiştirmeyin.
+
+## Test ve CI
+
+```bash
+npm run lint && npm test && npm run build
+```
+
+CI (`.github/workflows/ci.yml`): her push/PR'da lint + test + build + Lighthouse eşikleri (Perf ≥ 90, SEO ≥ 95, A11y ≥ 95, Best Practices ≥ 95 — `lighthouserc.json`). Repo secret'ı: `SANITY_PROJECT_ID`.
+
+## Deploy (Vercel)
+
+1. Repoyu Vercel'e bağlayın; yukarıdaki env değişkenlerini Production'a girin.
+2. Domain: **apex kanoniktir** (`tulparcarpet.com`); `www` → apex'e **301** yönlendirme kurun (Vercel domain ayarlarından redirect).
+3. Sanity webhook URL'ini prod domain ile güncelleyin.
+
+## Yayın sonrası manuel adımlar
+
+- **Google Search Console** + Bing Webmaster doğrulaması (AN-03); `sitemap.xml` gönderin.
+- **Google Business Profile** (GBP) kaydı oluşturun/güncelleyin.
+- GA4 ve Meta Pixel ID'lerini girip consent sonrası event akışını doğrulayın.
+- Gerçek içerik: ürün foto/video çekimleri, Dürüst Etiket verileri, 8 blog yazısı (SEO-13), hukukçu onaylı KVKK metinleri (PRD 11.3).
+- ADM-17 kabul senaryosunu marka sahibiyle canlı test edin.
