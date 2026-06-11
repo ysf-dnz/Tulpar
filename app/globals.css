@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 2.2 Renk token'ları */
+  --bg-base: #0E1322;
+  --bg-elevated: #161F38;
+  --bg-stroke: #27355C;
+  --accent-ember: #C2452F;
+  --accent-gold: #D9A441;
+  --text-primary: #F1EAD9;
+  --text-muted: #9AA6C4;
+  --success: #5FA876;
+
+  /* 2.3 Gradient sistemi — ad-hoc gradient yasak */
+  --grad-hero: radial-gradient(120% 90% at 70% 10%, #27355C 0%, #161F38 45%, #0E1322 100%);
+  --grad-ember: linear-gradient(135deg, #C2452F 0%, #8F2E1E 60%, #5C1F14 100%);
+  --grad-gold: linear-gradient(120deg, #E8C06A 0%, #D9A441 40%, #A87B26 100%);
+  --grad-card: linear-gradient(180deg, rgba(39,53,92,.55) 0%, rgba(22,31,56,.95) 100%);
+  --grad-border: linear-gradient(135deg, #D9A441, #C2452F);
+
+  /* 2.6 Hareket token'ları — ad-hoc süre/easing yasak */
+  --ease-flow: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-micro: 180ms;
+  --dur-element: 320ms;
+  --dur-page: 480ms;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-base: var(--bg-base);
+  --color-elevated: var(--bg-elevated);
+  --color-stroke: var(--bg-stroke);
+  --color-ember: var(--accent-ember);
+  --color-gold: var(--accent-gold);
+  --color-cream: var(--text-primary);
+  --color-muted: var(--text-muted);
+  --color-success: var(--success);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-figtree);
+  --font-data: var(--font-plex-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
 }
+
+/* TAS-02 gradient kenarlık yardımcı sınıfı */
+.card-premium {
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: var(--grad-card) padding-box, var(--grad-border) border-box;
+}
+
+/* TAS-01 hero ışık animasyonu (≤12s) */
+@keyframes hero-glow {
+  0%, 100% { background-position: 70% 10%; }
+  50% { background-position: 60% 25%; }
+}
+.hero-surface {
+  background: var(--grad-hero);
+  background-size: 160% 160%;
+  animation: hero-glow 12s var(--ease-flow) infinite;
+}
+
+/* FLW-04 scroll reveal: animation-timeline tercih, JS fallback sınıfı */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal-up var(--dur-element) var(--ease-flow) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+.reveal-js { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-element) var(--ease-flow), transform var(--dur-element) var(--ease-flow); }
+.reveal-js.is-visible { opacity: 1; transform: none; }
+@keyframes reveal-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* FLW-09 / ER-03 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal-js { opacity: 1; transform: none; }
+}
+
+/* ER-02 görünür focus — altın oker */
+:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
