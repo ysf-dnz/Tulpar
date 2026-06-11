@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Figtree, IBM_Plex_Mono } from "next/font/google";
 import { ViewTransitions } from "next-view-transitions";
+import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import "./globals.css";
 
 const display = Space_Grotesk({ subsets: ["latin", "latin-ext"], weight: ["500", "700"], variable: "--font-space-grotesk", display: "swap" });
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ViewTransitions>
       <html lang="tr" className={`${display.variable} ${body.variable} ${mono.variable}`}>
-        <body>{children}</body>
+        <body>
+          {children}
+          <AnalyticsScripts />
+        </body>
       </html>
     </ViewTransitions>
   );
