@@ -4,7 +4,7 @@ import { Link } from "next-view-transitions";
 import { client } from "@/sanity/client";
 import { POST_QUERY, POSTS_QUERY, SLUGS_QUERY } from "@/lib/queries";
 import { LiteYouTube } from "@/components/flow/LiteYouTube";
-import { breadcrumbJsonLd } from "@/lib/jsonld";
+import { articleJsonLd, breadcrumbJsonLd, faqJsonLd, videoJsonLd } from "@/lib/jsonld";
 import type { Metadata } from "next";
 
 export const revalidate = 3600;
@@ -12,6 +12,7 @@ export const revalidate = 3600;
 type Post = {
   title: string; excerpt?: string; category?: string; publishedAt?: string;
   body?: Parameters<typeof PortableText>[0]["value"]; videoUrl?: string;
+  updatedAt?: string; author?: string; faqItems?: { question: string; answer: string }[];
   seo?: { metaTitle?: string; metaDescription?: string };
 };
 type PostSummary = { title: string; slug: string; excerpt?: string; category?: string; publishedAt?: string };
@@ -66,6 +67,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         { name: "Blog", url: "https://tulparcarpet.com/blog/" },
         { name: post.title, url: `https://tulparcarpet.com/blog/${slug}/` },
       ])) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd({
+        title: post.title, slug, excerpt: post.excerpt, publishedAt: post.publishedAt,
+        updatedAt: post.updatedAt, author: post.author,
+      })) }} />
+      {post.videoUrl && post.publishedAt && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd({
+          title: post.title, url: post.videoUrl, uploadDate: post.publishedAt,
+        })) }} />
+      )}
+      {(post.faqItems?.length ?? 0) > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(post.faqItems!)) }} />
+      )}
       <header className="space-y-3">
         {post.category && <span className="font-data text-xs text-gold">{post.category}</span>}
         <h1 className="font-display text-4xl">{post.title}</h1>

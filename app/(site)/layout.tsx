@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { WaFab } from "@/components/whatsapp/WaFab";
 import { KilimProgress } from "@/components/flow/KilimProgress";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   let settings: { whatsappNumber?: string; waMessageGeneral?: string } | null = null;
@@ -14,6 +15,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   }
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }} />
       <KilimProgress />
       <SiteHeader />
       <main>{children}</main>
