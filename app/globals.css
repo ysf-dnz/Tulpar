@@ -88,10 +88,53 @@ body {
 .reveal-js.is-visible { opacity: 1; transform: none; }
 @keyframes reveal-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
+/* Motif yardımcı sınıfı — kilim desenleri CSS mask ile altın gradiente boyanır.
+   Dekoratif: aria-hidden + pointer-events:none ile kullanılır. */
+.motif {
+  position: absolute;
+  pointer-events: none;
+  background: var(--grad-gold);
+  -webkit-mask-image: var(--motif);
+  mask-image: var(--motif);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.motif-repeat-x {
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-size: auto 100%;
+  mask-size: auto 100%;
+}
+/* Yavaş süzülme — FLW-06/10: yalnız transform */
+@keyframes motif-float {
+  from { transform: translate3d(0, 0, 0) rotate(0); }
+  to { transform: translate3d(0, -12px, 0) rotate(0.5deg); }
+}
+.motif-float {
+  animation: motif-float 14s var(--ease-flow) infinite alternate;
+  will-change: transform;
+}
+
+/* Premium sayfa geçişleri (View Transitions) — yalnız transform/opacity (FLW-06/10) */
+::view-transition-old(root) { animation: vt-out var(--dur-page) var(--ease-exit) both; }
+::view-transition-new(root) { animation: vt-in var(--dur-page) var(--ease-flow) both; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-8px) scale(0.995); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(14px) scale(1.005); } }
+
+/* Gold premium detay — başlık altı altın çizgi */
+.gold-rule { height: 2px; width: 48px; background: var(--grad-gold); border-radius: 1px; }
+
+/* Kart hover premium dokunuş — transform-only, token süreli */
+a.card-premium { transition: transform var(--dur-micro) var(--ease-flow); }
+a.card-premium:hover { transform: translateY(-2px); }
+
 /* FLW-09 / ER-03 */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal-js { opacity: 1; transform: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
 }
 
 /* ER-02 görünür focus — altın oker */

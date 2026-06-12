@@ -1,11 +1,21 @@
 import { Link } from "next-view-transitions";
+import Image from "next/image";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-stroke px-6 py-16">
-      <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
+    <footer className="relative overflow-hidden border-t border-stroke px-6 py-16">
+      <div
+        aria-hidden
+        className="motif motif-repeat-x inset-x-0 top-2 h-12"
+        style={{ "--motif": "url(/motifs/desen-1.svg)", opacity: 0.07 } as React.CSSProperties}
+      />
+      <div className="relative mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
         <div>
-          <p className="font-display text-lg">Tulpar Carpet</p>
+          <div className="flex items-center gap-3">
+            <Image src="/emblem.svg" alt="" width={34} height={36} />
+            <p className="font-display text-lg">Tulpar Carpet</p>
+          </div>
+          <div className="gold-rule mt-3" aria-hidden />
           <p className="mt-2 text-sm text-muted">Mağazada gördüğün, evine gelen halıdır. Kayseri&apos;de üretilir.</p>
         </div>
         <nav className="space-y-2 text-sm text-muted">

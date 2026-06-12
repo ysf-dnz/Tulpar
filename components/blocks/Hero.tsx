@@ -5,6 +5,11 @@ import { urlFor } from "@/lib/image";
 export function Hero({ b }: { b: { variant: string; heading: string; subheading?: string; image?: { alt?: string } & object; primaryCtaLabel?: string; primaryCtaHref?: string } }) {
   return (
     <section className="hero-surface relative overflow-hidden px-6 py-32 max-md:py-20">
+      <div
+        aria-hidden
+        className="motif motif-float right-[-120px] top-16 h-[420px] w-[420px] max-md:hidden"
+        style={{ "--motif": "url(/motifs/desen-7.svg)", opacity: 0.08 } as React.CSSProperties}
+      />
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
         <div className="space-y-6">
           <h1 className="font-display text-5xl font-bold leading-tight max-md:text-3xl bg-clip-text text-transparent [background-image:var(--grad-gold)]">{b.heading}</h1>

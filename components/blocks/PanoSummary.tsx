@@ -21,7 +21,10 @@ export async function PanoSummary({ b }: { b: { heading: string } }) {
   return (
     <section className="px-6 py-24 max-md:py-16">
       <div className="mx-auto max-w-6xl space-y-8 text-center">
-        <h2 className="font-display text-3xl">{b.heading}</h2>
+        <div className="space-y-3">
+          <h2 className="font-display text-3xl">{b.heading}</h2>
+          <div className="gold-rule mx-auto" aria-hidden />
+        </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {items.map((i) => (
             <div key={i.label} className="card-premium p-6">

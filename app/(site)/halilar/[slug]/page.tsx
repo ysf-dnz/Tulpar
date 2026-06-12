@@ -59,7 +59,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-16 px-6 py-16">
+    <div className="relative mx-auto max-w-6xl space-y-16 overflow-x-clip px-6 py-16">
+      <div
+        aria-hidden
+        className="motif right-0 top-6 h-[200px] w-[200px] max-md:hidden"
+        style={{ "--motif": "url(/motifs/desen-6.svg)", opacity: 0.07 } as React.CSSProperties}
+      />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(p)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([
         { name: "Ana sayfa", url: "https://tulparcarpet.com/" },
