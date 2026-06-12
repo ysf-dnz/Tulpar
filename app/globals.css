@@ -53,16 +53,28 @@ body {
   background: var(--grad-card) padding-box, var(--grad-border) border-box;
 }
 
-/* TAS-01 hero ışık animasyonu (≤12s) */
-@keyframes hero-glow {
-  0%, 100% { background-position: 70% 10%; }
-  50% { background-position: 60% 25%; }
+/* TAS-01 hero ışık animasyonu (≤12s) — FLW-06/10: yalnız transform
+   (background-position animasyonu compositor'a alınamadığı için LCP'yi geciktiriyordu) */
+@keyframes hero-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-4%, 3%, 0); }
 }
 .hero-surface {
+  position: relative;
+  overflow: hidden;
   background: var(--grad-hero);
-  background-size: 160% 160%;
-  animation: hero-glow 12s var(--ease-flow) infinite;
 }
+.hero-surface::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: radial-gradient(55% 45% at 70% 20%, rgba(217, 164, 65, 0.07) 0%, transparent 70%);
+  animation: hero-drift 12s var(--ease-flow) infinite alternate;
+  will-change: transform;
+}
+/* İçerik ışık katmanının üstünde kalsın */
+.hero-surface > * { position: relative; z-index: 1; }
 
 /* FLW-04 scroll reveal: animation-timeline tercih, JS fallback sınıfı */
 @supports (animation-timeline: view()) {

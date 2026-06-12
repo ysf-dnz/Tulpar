@@ -18,7 +18,7 @@ export function SiteHeader() {
           <Image src="/logo-light.svg" alt="Tulpar Carpet" width={160} height={27} priority />
         </Link>
         <nav className="flex gap-6 text-sm text-muted max-md:hidden">
-          {nav.map((n) => <Link key={n.href} href={n.href} className="transition-colors duration-[var(--dur-micro)] hover:text-cream">{n.label}</Link>)}
+          {nav.map((n) => <Link key={n.href} href={n.href} className="inline-block px-1 py-2 transition-colors duration-[var(--dur-micro)] hover:text-cream">{n.label}</Link>)}
         </nav>
         <details className="relative md:hidden">
           <summary className="cursor-pointer list-none rounded-lg border border-stroke px-3 py-2 text-sm text-cream marker:content-none" aria-label="Menüyü aç">

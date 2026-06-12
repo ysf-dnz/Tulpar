@@ -11,7 +11,8 @@ test("cost calculator computes Fark and builds WhatsApp share link", async ({ pa
   }
 
   // rival: 5000 + 5*2*900 = 14000; tulpar: 8000; fark: 6000
-  const farkRow = page.locator("p", { hasText: "Fark" });
+  // CMS metinlerinde de "fark" geçebildiği için sonuç satırına (altın renkli özet) sabitle.
+  const farkRow = page.locator("p.text-gold", { hasText: "Fark" });
   await expect(farkRow).toContainText("6.000 ₺");
 
   const share = page.getByRole("link", { name: /WhatsApp'ta paylaş/ });

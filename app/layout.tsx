@@ -5,8 +5,10 @@ import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import "./globals.css";
 
 const display = Space_Grotesk({ subsets: ["latin", "latin-ext"], weight: ["500", "700"], variable: "--font-space-grotesk", display: "swap" });
-const body = Figtree({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "600"], variable: "--font-figtree", display: "swap" });
-const mono = IBM_Plex_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "500"], variable: "--font-plex-mono", display: "swap" });
+// Gövde fontu "optional": yavaş bağlantıda geç font-swap LCP girdisini yeniden tetiklemesin
+// (FLW-10 — bütçe kazanır); font cache'lendikten sonraki ziyaretlerde markalı font kullanılır.
+const body = Figtree({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "600"], variable: "--font-figtree", display: "optional" });
+const mono = IBM_Plex_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "500"], variable: "--font-plex-mono", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tulparcarpet.com"),

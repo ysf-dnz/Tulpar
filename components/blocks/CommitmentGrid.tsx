@@ -3,6 +3,7 @@ import { Link } from "next-view-transitions";
 export function CommitmentGrid({ b }: { b: { items: { title: string; text: string; href: string }[] } }) {
   return (
     <section className="px-6 py-24 max-md:py-16">
+      <h2 className="sr-only">Taahhütlerimiz</h2>
       <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-4 max-md:grid-cols-2">
         {(b.items ?? []).map((it) => (
           <Link key={it.title} href={it.href} className="card-premium block space-y-2 p-6 transition-transform duration-[var(--dur-micro)] hover:-translate-y-1 motion-reduce:hover:translate-y-0">
