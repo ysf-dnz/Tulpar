@@ -68,8 +68,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       ])) }} />
       <div className="grid gap-12 md:grid-cols-2">
         <div className="space-y-4">
-          <Image src={urlFor(p.heroImage).width(1200).url()} alt={p.heroImage.alt} width={1200} height={900}
-            priority className="rounded-xl" style={{ viewTransitionName: `product-${slug}` }} />
+          {p.heroImage ? (
+            <Image src={urlFor(p.heroImage).width(1200).url()} alt={p.heroImage.alt ?? p.title} width={1200} height={900}
+              priority className="rounded-xl" style={{ viewTransitionName: `product-${slug}` }} />
+          ) : (
+            <div aria-hidden className="hero-surface grid aspect-[4/3] w-full place-items-center rounded-xl"
+              style={{ viewTransitionName: `product-${slug}` }}>
+              <span className="font-data text-sm text-muted">Ürün fotoğrafları yakında</span>
+            </div>
+          )}
           <div className="grid grid-cols-4 gap-2">
             {(p.images ?? []).map((img: { alt?: string } & object, i: number) => (
               <Image key={i} src={urlFor(img).width(300).height(300).url()} alt={(img as { alt?: string }).alt ?? p.title}
