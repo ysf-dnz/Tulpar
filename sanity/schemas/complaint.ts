@@ -6,7 +6,7 @@ export const complaint = defineType({
   type: "document",
   initialValue: async (_params, { getClient }) => {
     const client = getClient({ apiVersion: "2026-06-01" });
-    const last = await client.fetch<number | null>(`max(*[_type=="complaint"].ticketNo)`);
+    const last = await client.fetch<number | null>(`math::max(*[_type=="complaint"].ticketNo)`);
     return { ticketNo: (last ?? 1000) + 1, date: new Date().toISOString() };
   },
   fields: [
