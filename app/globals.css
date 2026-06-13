@@ -142,53 +142,6 @@ body {
 /* hover'da altın taban biraz geri çekilir ki renk öne çıksın */
 .motif-reveal:hover .motif { opacity: 0.18 !important; transition: opacity var(--dur-element) var(--ease-flow); }
 
-/* Sayfa geçişi "dağılma" efekti — desen ortada belirir, dört köşeye
-   savrularak kaybolur, ardından sayfa açılır. Yalnız transform/opacity. */
-.page-scatter {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  overflow: hidden;
-}
-.scatter-tile {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 220px;
-  height: 292px;
-  margin: -146px 0 0 -110px;
-  background-image: var(--motif-color);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  will-change: transform, opacity;
-}
-.scatter-tl { animation: scatter-tl 760ms var(--ease-flow) both; }
-.scatter-tr { animation: scatter-tr 760ms var(--ease-flow) both; }
-.scatter-bl { animation: scatter-bl 760ms var(--ease-flow) both; }
-.scatter-br { animation: scatter-br 760ms var(--ease-flow) both; }
-@keyframes scatter-tl {
-  0% { transform: translate3d(0,0,0) scale(0.15); opacity: 0; }
-  28% { transform: translate3d(0,0,0) scale(1); opacity: 0.95; }
-  100% { transform: translate3d(-58vw,-66vh,0) scale(0.55) rotate(-12deg); opacity: 0; }
-}
-@keyframes scatter-tr {
-  0% { transform: translate3d(0,0,0) scale(0.15); opacity: 0; }
-  28% { transform: translate3d(0,0,0) scale(1); opacity: 0.95; }
-  100% { transform: translate3d(58vw,-66vh,0) scale(0.55) rotate(12deg); opacity: 0; }
-}
-@keyframes scatter-bl {
-  0% { transform: translate3d(0,0,0) scale(0.15); opacity: 0; }
-  28% { transform: translate3d(0,0,0) scale(1); opacity: 0.95; }
-  100% { transform: translate3d(-58vw,66vh,0) scale(0.55) rotate(12deg); opacity: 0; }
-}
-@keyframes scatter-br {
-  0% { transform: translate3d(0,0,0) scale(0.15); opacity: 0; }
-  28% { transform: translate3d(0,0,0) scale(1); opacity: 0.95; }
-  100% { transform: translate3d(58vw,66vh,0) scale(0.55) rotate(-12deg); opacity: 0; }
-}
-
 /* Gold premium detay — başlık altı altın çizgi */
 .gold-rule { height: 2px; width: 48px; background: var(--grad-gold); border-radius: 1px; }
 
@@ -202,7 +155,6 @@ a.card-premium:hover { transform: translateY(-2px); }
   .reveal-js { opacity: 1; transform: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
   .motif-reveal .motif-color { display: none; }
-  .page-scatter { display: none; }
 }
 
 /* ER-02 görünür focus — altın oker */
