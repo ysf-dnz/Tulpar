@@ -2,7 +2,9 @@
 
 Tulpar Carpet'in güven platformu sitesi: dürüst etiketli halı koleksiyonu, açık şikayet panosu, 5 yıllık gerçek maliyet hesaplayıcısı ve WhatsApp odaklı dönüşüm sistemi.
 
-**Stack:** Next.js 15 (App Router, TS), Tailwind CSS v4, Sanity v3 (`/studio`'da embed Studio), `next-view-transitions`, Vitest. Tüm sayfalar SSG/ISR + webhook revalidate.
+**Stack:** Next.js 16 (App Router, TS), Tailwind CSS v4, Sanity v5 (`/studio`'da embed Studio), `next-view-transitions`, Vitest (birim) + Playwright (e2e). Tüm sayfalar SSG/ISR + webhook revalidate.
+
+**Canlı:** https://tulpar-carpet.vercel.app · **Studio:** https://tulpar-carpet.vercel.app/studio
 
 ## Kurulum
 
@@ -43,10 +45,18 @@ Not: WhatsApp numarası env değil, CMS'te tutulur (`Site Ayarları → whatsapp
 ## Tohum içerik (seed)
 
 ```bash
-SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed.ts
+SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed.ts          # ana içerik
+SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-pages.ts    # statik sayfalar
+SANITY_API_WRITE_TOKEN=sk... npx tsx scripts/seed-blog.ts     # 8 köşe taşı blog yazısı (SEO-13)
 ```
 
-`createIfNotExists` kullanır, mevcut içeriğe dokunmaz. Yüklenenler: site ayarları (placeholder WA numarası — **değiştirin**), 2 örnek ürün (Bozkır, Kervan), 6 pano kaydı, `ana-sayfa` / `sss` (15 soru) / `maliyet-hesaplayici` sayfaları. **Ürün görselleri seed'e dahil değildir** — heroImage ve ≥5 galeri görselini Studio'dan ekleyin; eklenene kadar ürünler Studio doğrulamasında uyarı verir.
+Hepsi `createIfNotExists` kullanır, mevcut içeriğe dokunmaz.
+
+- `seed.ts` → site ayarları (placeholder WA numarası — **değiştirin**), 2 örnek ürün (Bozkır, Kervan), 6 pano kaydı, `ana-sayfa` / `sss` (15 soru) / `maliyet-hesaplayici` sayfaları.
+- `seed-pages.ts` → `durust-etiket`, `taahhutler`, `hakkimizda`, `kvkk`, `cerez-politikasi`, `iade-kosullari` statik sayfa içerikleri (KVKK metni taslaktır; hukuk onayı gerekir).
+- `seed-blog.ts` → 8 SEO köşe taşı blog yazısı.
+
+**Ürün görselleri seed'e dahil değildir** — heroImage ve ≥5 galeri görselini Studio'dan ekleyin; eklenene kadar ürünler Studio doğrulamasında uyarı verir.
 
 ## İçerik girişi el kitabı (özet)
 
@@ -92,5 +102,5 @@ CI (`.github/workflows/ci.yml`): her push/PR'da lint + test + build + Lighthouse
 - **Google Search Console** + Bing Webmaster doğrulaması (AN-03); `sitemap.xml` gönderin.
 - **Google Business Profile** (GBP) kaydı oluşturun/güncelleyin.
 - GA4 ve Meta Pixel ID'lerini girip consent sonrası event akışını doğrulayın.
-- Gerçek içerik: ürün foto/video çekimleri, Dürüst Etiket verileri, 8 blog yazısı (SEO-13), hukukçu onaylı KVKK metinleri (PRD 11.3).
+- Gerçek içerik: ürün foto/video çekimleri, Dürüst Etiket verileri, hukukçu onaylı KVKK metinleri (PRD 11.3). (8 blog yazısı seed ile yüklendi.)
 - ADM-17 kabul senaryosunu marka sahibiyle canlı test edin.
