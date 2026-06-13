@@ -7,7 +7,7 @@ export function SiteFooter() {
       <div
         aria-hidden
         className="motif motif-repeat-x inset-x-0 top-2 h-12"
-        style={{ "--motif": "url(/motifs/desen-1.svg)", opacity: 0.07 } as React.CSSProperties}
+        style={{ "--motif": "url(/motifs/desen-clean.svg)", opacity: 0.07 } as React.CSSProperties}
       />
       <div className="relative mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
         <div>

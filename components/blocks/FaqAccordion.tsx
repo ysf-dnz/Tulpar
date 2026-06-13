@@ -4,7 +4,7 @@ export function FaqAccordion({ b }: { b: { items: { question: string; answer: st
       <div
         aria-hidden
         className="motif bottom-[-70px] right-[-80px] h-[240px] w-[240px] max-md:hidden"
-        style={{ "--motif": "url(/motifs/desen-4.svg)", opacity: 0.07 } as React.CSSProperties}
+        style={{ "--motif": "url(/motifs/desen-clean.svg)", opacity: 0.07 } as React.CSSProperties}
       />
       <div className="mx-auto max-w-3xl space-y-3">
         {(b.items ?? []).map((it) => (

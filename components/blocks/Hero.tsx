@@ -8,7 +8,7 @@ export function Hero({ b }: { b: { variant: string; heading: string; subheading?
       <div
         aria-hidden
         className="motif motif-float right-[-120px] top-16 h-[420px] w-[420px] max-md:hidden"
-        style={{ "--motif": "url(/motifs/desen-7.svg)", opacity: 0.08 } as React.CSSProperties}
+        style={{ "--motif": "url(/motifs/desen-clean.svg)", opacity: 0.08 } as React.CSSProperties}
       />
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
         <div className="space-y-6">

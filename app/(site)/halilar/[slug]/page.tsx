@@ -63,7 +63,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <div
         aria-hidden
         className="motif right-0 top-6 h-[200px] w-[200px] max-md:hidden"
-        style={{ "--motif": "url(/motifs/desen-6.svg)", opacity: 0.07 } as React.CSSProperties}
+        style={{ "--motif": "url(/motifs/desen-clean.svg)", opacity: 0.07 } as React.CSSProperties}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(p)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([

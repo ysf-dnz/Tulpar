@@ -6,7 +6,7 @@ export function CommitmentGrid({ b }: { b: { items: { title: string; text: strin
       <div
         aria-hidden
         className="motif left-[-90px] top-[-60px] h-[260px] w-[260px] max-md:hidden"
-        style={{ "--motif": "url(/motifs/desen-2.svg)", opacity: 0.07 } as React.CSSProperties}
+        style={{ "--motif": "url(/motifs/desen-clean.svg)", opacity: 0.07 } as React.CSSProperties}
       />
       <h2 className="sr-only">Taahhütlerimiz</h2>
       <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-4 max-md:grid-cols-2">
