@@ -1,5 +1,5 @@
 import { Link } from "next-view-transitions";
-import { Logo } from "./Logo";
+import Image from "next/image";
 import { MobileMenu } from "./MobileMenu";
 
 const nav = [
@@ -16,7 +16,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-stroke bg-base/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <Link href="/" aria-label="Tulpar Carpet ana sayfa" className="flex items-center">
-          <Logo height={48} />
+          <Image src="/logo-full.svg" alt="Tulpar Carpet" width={130} height={54} priority />
         </Link>
         <nav className="flex gap-6 text-sm text-muted max-md:hidden">
           {nav.map((n) => <Link key={n.href} href={n.href} className="inline-block px-1 py-2 transition-colors duration-[var(--dur-micro)] hover:text-cream">{n.label}</Link>)}

@@ -1,5 +1,5 @@
 import { Link } from "next-view-transitions";
-import { Logo } from "./Logo";
+import Image from "next/image";
 
 export function SiteFooter() {
   return (
@@ -12,8 +12,7 @@ export function SiteFooter() {
       <div className="relative mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
         <div>
           <div className="flex items-center">
-            <Logo height={38} />
-            <span className="sr-only">Tulpar Carpet</span>
+            <Image src="/logo-full.svg" alt="Tulpar Carpet" width={120} height={50} />
           </div>
           <div className="gold-rule mt-3" aria-hidden />
           <p className="mt-2 text-sm text-muted">Mağazada gördüğün, evine gelen halıdır. Kayseri&apos;de üretilir.</p>
